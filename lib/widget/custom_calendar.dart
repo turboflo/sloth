@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sloth/boxes.dart';
 import 'package:sloth/model/event.dart';
 import 'package:table_calendar/table_calendar.dart';

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:sloth/custom_calendar.dart';
+import 'package:sloth/widget/custom_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
@@ -53,6 +53,89 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: CustomCalendar());
+    return Scaffold(
+      body: Row(
+        children: [
+          Container(
+            height: double.infinity,
+            // width: double.infinity,
+            color: Theme.of(context).colorScheme.background,
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Column(
+                children: [
+                  SideBarButton(
+                    iconData: Icons.calendar_month,
+                    isSelected: true,
+                    onPressed: () {},
+                  ),
+                  SideBarButton(
+                    iconData: Icons.event_repeat,
+                    isSelected: false,
+                    onPressed: () {},
+                  ),
+                  SideBarButton(
+                    iconData: Icons.picture_as_pdf,
+                    isSelected: false,
+                    onPressed: () {},
+                  ),
+                  Expanded(child: Container()),
+                  SideBarButton(
+                    iconData: Icons.settings,
+                    isSelected: false,
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            height: double.infinity,
+            width: 1,
+            color: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
+          ),
+          const Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: CustomCalendar(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SideBarButton extends StatelessWidget {
+  final Function() onPressed;
+  final IconData iconData;
+  final bool isSelected;
+
+  const SideBarButton({
+    Key? key,
+    required this.onPressed,
+    required this.iconData,
+    required this.isSelected,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Card(
+      color: isSelected ? colors.primary : null,
+      elevation: 1.5,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: IconButton(
+          onPressed: onPressed,
+          icon: Icon(
+            iconData,
+            color: isSelected
+                ? colors.background
+                : colors.onBackground.withOpacity(0.8),
+          ),
+        ),
+      ),
+    );
   }
 }
