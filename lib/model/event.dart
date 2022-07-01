@@ -1,7 +1,7 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
+import 'package:sloth/model/holiday.dart';
 
 part 'event.g.dart';
 
@@ -13,6 +13,38 @@ class Event extends HiveObject {
   late String type;
   @HiveField(2)
   late DateTime day;
+
+  Event({required this.title, required this.type, required this.day});
+
+  factory Event.fromHoliday(Holiday holiday) => Event(
+        title: holiday.name,
+        type: EventType.holiday.name,
+        day: holiday.day,
+      );
+
+  @override
+  String toString() {
+    return 'Event($title, $type, $day)';
+  }
+}
+
+class EventNotifier extends ChangeNotifier {
+  final events = <Event>[];
+
+  void addAll(List<Event> eventList) {
+    events.addAll(eventList);
+    notifyListeners();
+  }
+
+  void add(Event event) {
+    events.add(event);
+    notifyListeners();
+  }
+
+  void remove(Event event) {
+    events.remove(event);
+    notifyListeners();
+  }
 }
 
 enum EventType {
@@ -24,5 +56,5 @@ enum EventType {
 final Map<String, IconData> eventIcons = {
   EventType.work.name: Icons.work_history,
   EventType.vacation.name: Icons.celebration,
-  EventType.holiday.name: Icons.cancel,
+  EventType.holiday.name: Icons.event,
 };

@@ -1,11 +1,16 @@
 import 'dart:convert';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sloth/event_loader.dart';
 import 'package:sloth/widget/custom_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:sloth/model/event.dart';
+
+final eventsProvider =
+    ChangeNotifierProvider<EventNotifier>((ref) => EventNotifier());
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,10 +27,14 @@ void main() async {
   Hive.registerAdapter(EventAdapter());
   await Hive.openBox<Event>('events');
 
-  runApp(MyApp(
-    theme: theme,
-    darkTheme: darkTheme,
-  ));
+  runApp(
+    ProviderScope(
+      child: MyApp(
+        theme: theme,
+        darkTheme: darkTheme,
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -48,11 +57,38 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  bool _pageIsLoading = true;
+  int _pageIndex = 0;
+  final List<Widget> _pages = [
+    const CustomCalendar(),
+    Container(),
+    Container(),
+    Container(),
+  ];
+
+  @override
+  void initState() {
+    loadEvents();
+    super.initState();
+  }
+
+  Future<void> loadEvents() async {
+    final eventLoader = EventLoader();
+    ref.read(eventsProvider.notifier).addAll(await eventLoader.loadAll());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final events = ref.watch(eventsProvider).events;
+    print(events.where((e) => e.type == EventType.work.name));
     return Scaffold(
       body: Row(
         children: [
@@ -66,24 +102,35 @@ class HomePage extends StatelessWidget {
                 children: [
                   SideBarButton(
                     iconData: Icons.calendar_month,
-                    isSelected: true,
-                    onPressed: () {},
+                    isSelected: _pageIndex == 0,
+                    onPressed: () {
+                      setState(() => _pageIndex = 0);
+                    },
                   ),
                   SideBarButton(
                     iconData: Icons.event_repeat,
-                    isSelected: false,
-                    onPressed: () {},
+                    isSelected: _pageIndex == 1,
+                    onPressed: () {
+                      setState(() => _pageIndex = 1);
+                    },
                   ),
                   SideBarButton(
                     iconData: Icons.picture_as_pdf,
-                    isSelected: false,
-                    onPressed: () {},
+                    isSelected: _pageIndex == 2,
+                    onPressed: () {
+                      setState(() => _pageIndex = 2);
+                    },
                   ),
                   Expanded(child: Container()),
                   SideBarButton(
                     iconData: Icons.settings,
-                    isSelected: false,
-                    onPressed: () {},
+                    isSelected: _pageIndex == 3,
+                    onPressed: () {
+                      setState(() => _pageIndex = 3);
+                      // EventLoader().loadAll().then((events) {
+                      //   print(events);
+                      // });
+                    },
                   ),
                 ],
               ),
@@ -94,10 +141,10 @@ class HomePage extends StatelessWidget {
             width: 1,
             color: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
           ),
-          const Expanded(
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: CustomCalendar(),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: _pages[_pageIndex],
             ),
           ),
         ],
@@ -127,7 +174,7 @@ class SideBarButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: IconButton(
-          onPressed: onPressed,
+          onPressed: isSelected ? null : onPressed,
           icon: Icon(
             iconData,
             color: isSelected

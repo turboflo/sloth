@@ -16,10 +16,11 @@ class EventAdapter extends TypeAdapter<Event> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Event()
-      ..title = fields[0] as String
-      ..type = fields[1] as String
-      ..day = fields[2] as DateTime;
+    return Event(
+      title: fields[0] as String,
+      type: fields[1] as String,
+      day: fields[2] as DateTime,
+    );
   }
 
   @override

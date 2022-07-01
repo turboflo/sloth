@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sloth/boxes.dart';
+import 'package:sloth/main.dart';
 import 'package:sloth/model/event.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -7,14 +9,14 @@ import 'package:hive/hive.dart';
 
 import 'calendar_field.dart';
 
-class CustomCalendar extends StatefulWidget {
+class CustomCalendar extends ConsumerStatefulWidget {
   const CustomCalendar({Key? key}) : super(key: key);
 
   @override
-  State<CustomCalendar> createState() => _CustomCalendarState();
+  ConsumerState<CustomCalendar> createState() => _CustomCalendarState();
 }
 
-class _CustomCalendarState extends State<CustomCalendar> {
+class _CustomCalendarState extends ConsumerState<CustomCalendar> {
   final todaysDate = DateTime.now();
   var _focusedCalendarDate = DateTime.now();
   final _initialCalendarDate = DateTime(2000);
@@ -30,7 +32,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
 
   @override
   void dispose() {
-    Hive.close();
+    // Hive.close();
     super.dispose();
   }
 
@@ -39,11 +41,12 @@ class _CustomCalendarState extends State<CustomCalendar> {
     required String eventType,
     required DateTime day,
   }) {
-    final event = Event()
-      ..title = title
-      ..type = eventType
-      ..day = DateUtils.dateOnly(day);
-
+    final event = Event(
+      title: title,
+      type: eventType,
+      day: DateUtils.dateOnly(day),
+    );
+    ref.read(eventsProvider.notifier).add(event);
     final box = Boxes.getEvents();
     box.add(event);
   }

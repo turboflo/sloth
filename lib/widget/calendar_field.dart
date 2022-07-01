@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:sloth/boxes.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sloth/main.dart';
 import 'package:sloth/model/event.dart';
 
-class CalendarField extends StatelessWidget {
+class CalendarField extends ConsumerWidget {
   final DateTime day;
   final DateTime focusedDay;
 
@@ -38,12 +38,22 @@ class CalendarField extends StatelessWidget {
       );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
     final now = DateUtils.dateOnly(DateTime.now());
     final isSelected = day.day == focusedDay.day;
     final isInMonth = day.month == focusedDay.month;
     final isToday = DateUtils.dateOnly(day).isAtSameMomentAs(now);
+
+    List<Event> events = ref
+        .watch(eventsProvider)
+        .events
+        .where(
+          (event) => DateUtils.dateOnly(day).isAtSameMomentAs(
+            DateUtils.dateOnly(event.day),
+          ),
+        )
+        .toList();
 
     if (!isInMonth) {
       return Center(
@@ -82,20 +92,7 @@ class CalendarField extends StatelessWidget {
               ),
             ),
           ),
-          ValueListenableBuilder<Box<Event>>(
-            valueListenable: Boxes.getEvents().listenable(),
-            builder: (context, box, _) {
-              final events = box.values.toList().cast<Event>().where(
-                    (event) => DateUtils.dateOnly(day).isAtSameMomentAs(
-                      DateUtils.dateOnly(event.day),
-                    ),
-                  );
-              if (events.isEmpty) {
-                return Container();
-              }
-              return getIndicator(events.first, isSelected, colors);
-            },
-          ),
+          if (events.isNotEmpty) getIndicator(events.first, isSelected, colors)
         ],
       ),
     );
