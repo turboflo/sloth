@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive/hive.dart';
 import 'package:sloth/boxes.dart';
 import 'package:sloth/model/event.dart';
 
@@ -11,14 +10,14 @@ class CalendarField extends StatelessWidget {
   const CalendarField({Key? key, required this.day, required this.focusedDay})
       : super(key: key);
 
-  Widget getWorkWidget(String text, bool isSelected, ColorScheme colors) =>
+  Widget getIndicator(Event event, bool isSelected, ColorScheme colors) =>
       Positioned(
         right: 5,
         bottom: 5,
         child: Row(
           children: [
             Icon(
-              Icons.work_history,
+              eventIcons[event.type],
               color: isSelected
                   ? colors.background
                   : colors.onBackground.withOpacity(0.5),
@@ -26,7 +25,7 @@ class CalendarField extends StatelessWidget {
             ),
             const SizedBox(width: 5),
             Text(
-              '16:00 - 20:00',
+              event.title,
               style: TextStyle(
                 color: isSelected
                     ? colors.background
@@ -94,7 +93,7 @@ class CalendarField extends StatelessWidget {
               if (events.isEmpty) {
                 return Container();
               }
-              return getWorkWidget(events.first.title, isSelected, colors);
+              return getIndicator(events.first, isSelected, colors);
             },
           ),
         ],

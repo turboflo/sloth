@@ -35,18 +35,29 @@ class _CustomCalendarState extends State<CustomCalendar> {
     super.dispose();
   }
 
-  void addEvent(DateTime day) {
+  void addEvent({
+    required String title,
+    required String eventType,
+    required DateTime day,
+  }) {
     final event = Event()
-      ..title = '16:00 - 20:00'
-      ..type = EventType.work.toString()
+      ..title = title
+      ..type = eventType
       ..day = DateUtils.dateOnly(day);
 
     final box = Boxes.getEvents();
     box.add(event);
   }
 
+  String capitalize(String string) {
+    return "${string[0].toUpperCase()}${string.substring(1).toLowerCase()}";
+  }
+
   showAddEventDialog(BuildContext context) {
-    final con = TextEditingController();
+    final titleCon = TextEditingController();
+    final eventTypes = EventType.values.map((e) => e.name);
+    String dropdownValue = eventTypes.first;
+
     // set up the buttons
     Widget cancelButton = TextButton(
       child: const Text("Cancel"),
@@ -55,7 +66,11 @@ class _CustomCalendarState extends State<CustomCalendar> {
     Widget continueButton = TextButton(
       child: const Text("Add"),
       onPressed: () {
-        addEvent(_focusedCalendarDate);
+        addEvent(
+          title: titleCon.text,
+          eventType: dropdownValue,
+          day: _focusedCalendarDate,
+        );
         Navigator.pop(context);
       },
     );
@@ -63,18 +78,60 @@ class _CustomCalendarState extends State<CustomCalendar> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: const Text("Add Event"),
-      // content: TextField(
-      //   controller: con,
-      //   inputFormatters: [
-      //     // FilteringTextInputFormatter.allow(
-      //     //   RegExp(
-      //     //     r'^(?:[01]?\d|2[0-3])(?::(?:[0-5]\d?)?)?$',
-      //     //     caseSensitive: false,
-      //     //     multiLine: false,
-      //     //   ),
-      //     // ),
-      //   ],
-      // ),
+      content: StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          final colors = Theme.of(context).colorScheme;
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: colors.onBackground.withOpacity(0.5),
+                  ),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(4.0),
+                  ),
+                ),
+                child: DropdownButton<String>(
+                  underline: Container(),
+                  value: dropdownValue,
+                  isExpanded: true,
+                  items: eventTypes
+                      .map((e) => DropdownMenuItem<String>(
+                            value: e,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(capitalize(e)),
+                            ),
+                          ))
+                      .toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownValue = newValue!;
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(height: 15),
+              TextField(
+                controller: titleCon,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                  border: OutlineInputBorder(
+                    // gapPadding: 5,
+                    borderSide: BorderSide(
+                      color: colors.onBackground.withOpacity(0.5),
+                    ),
+                  ),
+                  labelText: 'Title',
+                ),
+              ),
+            ],
+          );
+        },
+      ),
       actions: [
         cancelButton,
         continueButton,

@@ -1,3 +1,6 @@
+import 'dart:collection';
+
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'event.g.dart';
@@ -17,3 +20,9 @@ enum EventType {
   holiday,
   vacation,
 }
+
+final Map<String, IconData> eventIcons = {
+  EventType.work.name: Icons.work_history,
+  EventType.vacation.name: Icons.celebration,
+  EventType.holiday.name: Icons.cancel,
+};
