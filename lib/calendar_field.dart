@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
+import 'package:sloth/boxes.dart';
+import 'package:sloth/model/event.dart';
 
 class CalendarField extends StatelessWidget {
   final DateTime day;
@@ -6,6 +10,33 @@ class CalendarField extends StatelessWidget {
 
   const CalendarField({Key? key, required this.day, required this.focusedDay})
       : super(key: key);
+
+  Widget getWorkWidget(String text, bool isSelected, ColorScheme colors) =>
+      Positioned(
+        right: 5,
+        bottom: 5,
+        child: Row(
+          children: [
+            Icon(
+              Icons.work_history,
+              color: isSelected
+                  ? colors.background
+                  : colors.onBackground.withOpacity(0.5),
+              size: 12,
+            ),
+            const SizedBox(width: 5),
+            Text(
+              '16:00 - 20:00',
+              style: TextStyle(
+                color: isSelected
+                    ? colors.background
+                    : colors.onBackground.withOpacity(0.5),
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -52,32 +83,20 @@ class CalendarField extends StatelessWidget {
               ),
             ),
           ),
-          if (day.weekday < 6)
-            Positioned(
-              right: 5,
-              bottom: 5,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.work_history,
-                    color: isSelected
-                        ? colors.background
-                        : colors.onBackground.withOpacity(0.5),
-                    size: 12,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    '16:00 - 20:00',
-                    style: TextStyle(
-                      color: isSelected
-                          ? colors.background
-                          : colors.onBackground.withOpacity(0.5),
-                      fontSize: 12,
+          ValueListenableBuilder<Box<Event>>(
+            valueListenable: Boxes.getEvents().listenable(),
+            builder: (context, box, _) {
+              final events = box.values.toList().cast<Event>().where(
+                    (event) => DateUtils.dateOnly(day).isAtSameMomentAs(
+                      DateUtils.dateOnly(event.day),
                     ),
-                  ),
-                ],
-              ),
-            ),
+                  );
+              if (events.isEmpty) {
+                return Container();
+              }
+              return getWorkWidget(events.first.title, isSelected, colors);
+            },
+          ),
         ],
       ),
     );

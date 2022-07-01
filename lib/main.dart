@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sloth/custom_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
+import 'package:sloth/model/event.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +17,10 @@ void main() async {
   final darkThemeStr = await rootBundle.loadString('assets/theme_dark.json');
   final darkThemeJson = jsonDecode(darkThemeStr);
   final darkTheme = ThemeDecoder.decodeThemeData(darkThemeJson)!;
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(EventAdapter());
+  await Hive.openBox<Event>('events');
 
   runApp(MyApp(
     theme: theme,

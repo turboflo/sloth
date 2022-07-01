@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sloth/boxes.dart';
+import 'package:sloth/model/event.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 
 import 'calendar_field.dart';
 
@@ -14,18 +19,84 @@ class _CustomCalendarState extends State<CustomCalendar> {
   final todaysDate = DateTime.now();
   var _focusedCalendarDate = DateTime.now();
   final _initialCalendarDate = DateTime(2000);
-  final _lastCalendarDate = DateTime(2050);
+  final _lastCalendarDate = DateTime(DateTime.now().year + 2, 12);
   DateTime? selectedCalendarDate;
 
   @override
   void initState() {
     selectedCalendarDate = _focusedCalendarDate;
+    // Boxes.getEvents().deleteAll(List.generate(20, (index) => index));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
+  }
+
+  void addEvent(DateTime day) {
+    final event = Event()
+      ..title = '16:00 - 20:00'
+      ..type = EventType.work.toString()
+      ..day = DateUtils.dateOnly(day);
+
+    final box = Boxes.getEvents();
+    box.add(event);
+  }
+
+  showAddEventDialog(BuildContext context) {
+    final con = TextEditingController();
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed: () => Navigator.pop(context),
+    );
+    Widget continueButton = TextButton(
+      child: const Text("Add"),
+      onPressed: () {
+        addEvent(_focusedCalendarDate);
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Add Event"),
+      // content: TextField(
+      //   controller: con,
+      //   inputFormatters: [
+      //     // FilteringTextInputFormatter.allow(
+      //     //   RegExp(
+      //     //     r'^(?:[01]?\d|2[0-3])(?::(?:[0-5]\d?)?)?$',
+      //     //     caseSensitive: false,
+      //     //     multiLine: false,
+      //     //   ),
+      //     // ),
+      //   ],
+      // ),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () => showAddEventDialog(context),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
