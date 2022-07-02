@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../event_loader.dart';
 import '../main.dart';
+import '../service/event_loader.dart';
 
 const Map<String, String> stateSettingMap = {
   'none': 'Keine Anzeigen',

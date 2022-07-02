@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
-import 'package:sloth/holiday_api.dart';
 import 'package:sloth/model/event.dart';
 
-import 'boxes.dart';
-import 'model/holiday.dart';
+import '../boxes.dart';
+import '../model/holiday.dart';
+import 'holiday_api.dart';
 
 class EventLoader {
   static final HolidayAPI _holidayAPI = HolidayAPI();
