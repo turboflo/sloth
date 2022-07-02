@@ -160,6 +160,7 @@ class _CustomCalendarState extends ConsumerState<CustomCalendar> {
         child: Column(
           children: [
             TableCalendar(
+              locale: 'de_DE',
               //
               calendarBuilders: CalendarBuilders(
                 defaultBuilder: (context, day, focusedDay) => CalendarField(

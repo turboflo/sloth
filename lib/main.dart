@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:sloth/event_loader.dart';
 import 'package:sloth/widget/custom_calendar.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +28,13 @@ void main() async {
   Hive.registerAdapter(EventAdapter());
   await Hive.openBox<Event>('events');
 
-  runApp(
-    ProviderScope(
-      child: MyApp(
-        theme: theme,
-        darkTheme: darkTheme,
+  initializeDateFormatting().then(
+    (_) => runApp(
+      ProviderScope(
+        child: MyApp(
+          theme: theme,
+          darkTheme: darkTheme,
+        ),
       ),
     ),
   );
@@ -65,7 +68,6 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  bool _pageIsLoading = true;
   int _pageIndex = 0;
   final List<Widget> _pages = [
     const CustomCalendar(),
