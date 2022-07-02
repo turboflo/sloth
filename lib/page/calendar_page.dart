@@ -4,19 +4,17 @@ import 'package:sloth/boxes.dart';
 import 'package:sloth/main.dart';
 import 'package:sloth/model/event.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive/hive.dart';
 
-import 'calendar_field.dart';
+import '../widget/calendar_field.dart';
 
-class CustomCalendar extends ConsumerStatefulWidget {
-  const CustomCalendar({Key? key}) : super(key: key);
+class CalendarPage extends ConsumerStatefulWidget {
+  const CalendarPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<CustomCalendar> createState() => _CustomCalendarState();
+  ConsumerState<CalendarPage> createState() => _CalendarPageState();
 }
 
-class _CustomCalendarState extends ConsumerState<CustomCalendar> {
+class _CalendarPageState extends ConsumerState<CalendarPage> {
   final todaysDate = DateTime.now();
   var _focusedCalendarDate = DateTime.now();
   final _initialCalendarDate = DateTime(2000);
@@ -28,12 +26,6 @@ class _CustomCalendarState extends ConsumerState<CustomCalendar> {
     selectedCalendarDate = _focusedCalendarDate;
     // Boxes.getEvents().deleteAll(List.generate(20, (index) => index));
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    // Hive.close();
-    super.dispose();
   }
 
   void addEvent({

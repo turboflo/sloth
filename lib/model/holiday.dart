@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class Holiday {
   final DateTime day;
   final String name;
@@ -47,7 +45,7 @@ class Holiday {
     return Holiday(
       day: DateTime.parse(json['date'] ?? '200-03-04'),
       name: json['fname'] ?? 'Feiertag',
-      allStates: json['allStates'] == '1',
+      allStates: json['all_states'] == '1',
       bw: json['bw'] == '1',
       by: json['by'] == '1',
       be: json['be'] == '1',
@@ -65,5 +63,48 @@ class Holiday {
       sh: json['sh'] == '1',
       th: json['th'] == '1',
     );
+  }
+
+  bool isValid(String identifier) {
+    switch (identifier) {
+      case 'none':
+        return false;
+      case 'allStates':
+        return allStates;
+      case 'bw':
+        return bw;
+      case 'by':
+        return by;
+      case 'be':
+        return be;
+      case 'bb':
+        return bb;
+      case 'hb':
+        return hb;
+      case 'hh':
+        return hh;
+      case 'he':
+        return he;
+      case 'mv':
+        return mv;
+      case 'ni':
+        return ni;
+      case 'nw':
+        return nw;
+      case 'rp':
+        return rp;
+      case 'sl':
+        return sl;
+      case 'sn':
+        return sn;
+      case 'st':
+        return st;
+      case 'sh':
+        return sh;
+      case 'th':
+        return th;
+      default:
+        return false;
+    }
   }
 }

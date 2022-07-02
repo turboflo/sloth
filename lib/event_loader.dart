@@ -7,19 +7,24 @@ import 'model/holiday.dart';
 
 class EventLoader {
   static final HolidayAPI _holidayAPI = HolidayAPI();
+  final box = Hive.box('settings');
 
-  Future<List<Event>> loadAll() async => [
-        ...await loadFromBoxes(),
-        ...await loadHolidaysFromAPI(),
+  Future<List<Event>> getAll() async => [
+        ...await getFromBoxes(),
+        ...await getHolidaysFromAPI(),
       ];
 
-  Future<List<Event>> loadFromBoxes() async {
+  Future<List<Event>> getFromBoxes() async {
     Box<Event> box = Boxes.getEvents();
     return box.values.toList().cast<Event>();
   }
 
-  Future<List<Event>> loadHolidaysFromAPI() async {
+  Future<List<Event>> getHolidaysFromAPI() async {
     List<Holiday> holidays = await _holidayAPI.fetchHolidays();
-    return holidays.map((holiday) => Event.fromHoliday(holiday)).toList();
+    String identifier = box.get('holidayIdentifier', defaultValue: 'allStates');
+    return holidays
+        .where((holiday) => holiday.isValid(identifier))
+        .map((holiday) => Event.fromHoliday(holiday))
+        .toList();
   }
 }

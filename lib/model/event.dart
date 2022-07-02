@@ -31,6 +31,12 @@ class Event extends HiveObject {
 class EventNotifier extends ChangeNotifier {
   final events = <Event>[];
 
+  void replaceAll(List<Event> eventList) {
+    events.clear();
+    events.addAll(eventList);
+    notifyListeners();
+  }
+
   void addAll(List<Event> eventList) {
     events.addAll(eventList);
     notifyListeners();

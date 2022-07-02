@@ -4,11 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sloth/event_loader.dart';
-import 'package:sloth/widget/custom_calendar.dart';
+import 'package:sloth/page/calendar_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:sloth/model/event.dart';
+import 'package:sloth/page/settings_page.dart';
 
 final eventsProvider =
     ChangeNotifierProvider<EventNotifier>((ref) => EventNotifier());
@@ -27,6 +28,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(EventAdapter());
   await Hive.openBox<Event>('events');
+  await Hive.openBox('settings');
 
   initializeDateFormatting().then(
     (_) => runApp(
@@ -70,10 +72,10 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   int _pageIndex = 0;
   final List<Widget> _pages = [
-    const CustomCalendar(),
+    const CalendarPage(),
     Container(),
     Container(),
-    Container(),
+    const SettingsPage(),
   ];
 
   @override
@@ -84,13 +86,11 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   Future<void> loadEvents() async {
     final eventLoader = EventLoader();
-    ref.read(eventsProvider.notifier).addAll(await eventLoader.loadAll());
+    ref.read(eventsProvider.notifier).addAll(await eventLoader.getAll());
   }
 
   @override
   Widget build(BuildContext context) {
-    final events = ref.watch(eventsProvider).events;
-    print(events.where((e) => e.type == EventType.work.name));
     return Scaffold(
       body: Row(
         children: [
@@ -129,9 +129,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                     isSelected: _pageIndex == 3,
                     onPressed: () {
                       setState(() => _pageIndex = 3);
-                      // EventLoader().loadAll().then((events) {
-                      //   print(events);
-                      // });
                     },
                   ),
                 ],
