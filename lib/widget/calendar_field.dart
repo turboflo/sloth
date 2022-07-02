@@ -10,6 +10,14 @@ class CalendarField extends ConsumerWidget {
   const CalendarField({Key? key, required this.day, required this.focusedDay})
       : super(key: key);
 
+  Widget getHolidayIndicator(bool isSelected, ColorScheme colors) {
+    return Icon(
+      eventIcons[EventType.holiday.name],
+      color: isSelected ? colors.background : colors.primary,
+      size: 12,
+    );
+  }
+
   Widget getIndicator(Event event, bool isSelected, ColorScheme colors) =>
       Positioned(
         right: 5,
@@ -45,7 +53,7 @@ class CalendarField extends ConsumerWidget {
     final isInMonth = day.month == focusedDay.month;
     final isToday = DateUtils.dateOnly(day).isAtSameMomentAs(now);
 
-    List<Event> events = ref
+    final List<Event> events = ref
         .watch(eventsProvider)
         .events
         .where(
@@ -54,6 +62,14 @@ class CalendarField extends ConsumerWidget {
           ),
         )
         .toList();
+    final isHoliday = events
+        .where((event) => event.type == EventType.holiday.name)
+        .isNotEmpty;
+    final isWorkDay =
+        events.where((event) => event.type == EventType.work.name).isNotEmpty;
+    final isVacation = events
+        .where((event) => event.type == EventType.vacation.name)
+        .isNotEmpty;
 
     if (!isInMonth) {
       return Center(
@@ -85,14 +101,36 @@ class CalendarField extends ConsumerWidget {
           Positioned(
             top: 5,
             left: 5,
-            child: Text(
-              day.day.toString(),
-              style: TextStyle(
-                color: isSelected ? colors.background : null,
-              ),
+            child: Flex(
+              direction: Axis.horizontal,
+              children: [
+                Text(
+                  day.day.toString(),
+                  style: TextStyle(
+                    color: isSelected ? colors.background : null,
+                  ),
+                ),
+                const SizedBox(width: 2),
+                if (isHoliday) getHolidayIndicator(isSelected, colors),
+              ],
             ),
           ),
-          if (events.isNotEmpty) getIndicator(events.first, isSelected, colors)
+          if (isWorkDay)
+            getIndicator(
+              events.firstWhere(
+                (e) => e.type == EventType.work.name,
+              ),
+              isSelected,
+              colors,
+            ),
+          if (isVacation && !isWorkDay)
+            getIndicator(
+              events.firstWhere(
+                (e) => e.type == EventType.vacation.name,
+              ),
+              isSelected,
+              colors,
+            ),
         ],
       ),
     );

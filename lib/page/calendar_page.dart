@@ -49,16 +49,59 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
   showAddEventDialog(BuildContext context) {
     final titleCon = TextEditingController();
-    final eventTypes = EventType.values.map((e) => e.name);
+    // eventTypes
+    //                   .map((e) => DropdownMenuItem<String>(
+    //                         value: e,
+    //                         child: Padding(
+    //                           padding:
+    //                               const EdgeInsets.symmetric(horizontal: 10),
+    //                           child: Text(capitalize(e)),
+    //                         ),
+    //                       ))
+    //                   .toList(),
+    final items = [
+      DropdownMenuItem(
+        value: EventType.work.name,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Flex(
+            direction: Axis.horizontal,
+            children: [
+              Icon(eventIcons[EventType.work.name]),
+              const SizedBox(width: 10),
+              const Text('Arbeit'),
+            ],
+          ),
+        ),
+      ),
+      DropdownMenuItem(
+        value: EventType.vacation.name,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Flex(
+            direction: Axis.horizontal,
+            children: [
+              Icon(eventIcons[EventType.vacation.name]),
+              const SizedBox(width: 10),
+              const Text('Urlaub'),
+            ],
+          ),
+        ),
+      )
+    ];
+    final eventTypes = [
+      EventType.work.name,
+      EventType.holiday.name,
+    ];
     String dropdownValue = eventTypes.first;
 
     // set up the buttons
     Widget cancelButton = TextButton(
-      child: const Text("Cancel"),
+      child: const Text("Abbrechen"),
       onPressed: () => Navigator.pop(context),
     );
     Widget continueButton = TextButton(
-      child: const Text("Add"),
+      child: const Text("Speichern"),
       onPressed: () {
         addEvent(
           title: titleCon.text,
@@ -68,10 +111,11 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         Navigator.pop(context);
       },
     );
-
+    String title =
+        '${_focusedCalendarDate.day}.${_focusedCalendarDate.month}.${_focusedCalendarDate.year}';
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: const Text("Add Event"),
+      title: Text(title),
       content: StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           final colors = Theme.of(context).colorScheme;
@@ -91,16 +135,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                   underline: Container(),
                   value: dropdownValue,
                   isExpanded: true,
-                  items: eventTypes
-                      .map((e) => DropdownMenuItem<String>(
-                            value: e,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(capitalize(e)),
-                            ),
-                          ))
-                      .toList(),
+                  items: items,
                   onChanged: (String? newValue) {
                     setState(() {
                       dropdownValue = newValue!;
@@ -119,7 +154,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                       color: colors.onBackground.withOpacity(0.5),
                     ),
                   ),
-                  labelText: 'Title',
+                  // labelText: 'Title',
                 ),
               ),
             ],
@@ -143,57 +178,74 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => showAddEventDialog(context),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TableCalendar(
-              locale: 'de_DE',
-              //
-              calendarBuilders: CalendarBuilders(
-                defaultBuilder: (context, day, focusedDay) => CalendarField(
-                  day: day,
-                  focusedDay: focusedDay,
-                ),
-                selectedBuilder: (context, day, focusedDay) => CalendarField(
-                  day: day,
-                  focusedDay: focusedDay,
-                ),
-                todayBuilder: (context, day, focusedDay) => CalendarField(
-                  day: day,
-                  focusedDay: focusedDay,
-                ),
-                outsideBuilder: (context, day, focusedDay) => CalendarField(
-                  day: day,
-                  focusedDay: focusedDay,
-                ),
+      body: Column(
+        children: [
+          TableCalendar(
+            locale: 'de_DE',
+            //
+            calendarBuilders: CalendarBuilders(
+              defaultBuilder: (context, day, focusedDay) => CalendarField(
+                day: day,
+                focusedDay: focusedDay,
               ),
-              //
-              focusedDay: _focusedCalendarDate,
-              firstDay: _initialCalendarDate,
-              lastDay: _lastCalendarDate,
-              availableCalendarFormats: const {CalendarFormat.month: 'Month'},
-              calendarFormat: CalendarFormat.month,
-              startingDayOfWeek: StartingDayOfWeek.monday,
-
-              selectedDayPredicate: (currentSelectedDate) {
-                return (isSameDay(selectedCalendarDate!, currentSelectedDate));
-              },
-              onDaySelected: (selectedDay, focusedDay) {
-                if (!isSameDay(selectedCalendarDate, selectedDay)) {
-                  setState(() {
-                    selectedCalendarDate = selectedDay;
-                    _focusedCalendarDate = focusedDay;
-                  });
-                }
-              },
+              selectedBuilder: (context, day, focusedDay) => CalendarField(
+                day: day,
+                focusedDay: focusedDay,
+              ),
+              todayBuilder: (context, day, focusedDay) => CalendarField(
+                day: day,
+                focusedDay: focusedDay,
+              ),
+              outsideBuilder: (context, day, focusedDay) => CalendarField(
+                day: day,
+                focusedDay: focusedDay,
+              ),
             ),
-          ],
-        ),
+            //
+            focusedDay: _focusedCalendarDate,
+            firstDay: _initialCalendarDate,
+            lastDay: _lastCalendarDate,
+            availableCalendarFormats: const {CalendarFormat.month: 'Month'},
+            calendarFormat: CalendarFormat.month,
+            startingDayOfWeek: StartingDayOfWeek.monday,
+
+            selectedDayPredicate: (currentSelectedDate) {
+              return (isSameDay(selectedCalendarDate!, currentSelectedDate));
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              if (!isSameDay(selectedCalendarDate, selectedDay)) {
+                setState(() {
+                  selectedCalendarDate = selectedDay;
+                  _focusedCalendarDate = focusedDay;
+                });
+              }
+            },
+          ),
+          Expanded(child: Container()),
+          Row(
+            children: [
+              Icon(
+                eventIcons[EventType.holiday.name],
+                size: 15,
+                color: colors.onBackground.withOpacity(0.5),
+              ),
+              Text(
+                ' Feiertag',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: colors.onBackground.withOpacity(0.5),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 10),
+        ],
       ),
     );
     ;

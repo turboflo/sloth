@@ -62,5 +62,5 @@ enum EventType {
 final Map<String, IconData> eventIcons = {
   EventType.work.name: Icons.work_history,
   EventType.vacation.name: Icons.celebration,
-  EventType.holiday.name: Icons.event,
+  EventType.holiday.name: Icons.auto_awesome,
 };
