@@ -12,6 +12,7 @@ import 'package:sloth/page/settings_page.dart';
 
 import 'service/event_loader.dart';
 import 'widget/sidebar_button.dart';
+import 'widget/version_card.dart';
 
 final eventsProvider =
     ChangeNotifierProvider<EventNotifier>((ref) => EventNotifier());
@@ -126,19 +127,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                       setState(() => _pageIndex = 2);
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(1.0),
-                    child: Text(
-                      'pre-release',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onBackground
-                            .withOpacity(0.3),
-                      ),
-                    ),
-                  )
+                  const VersionCard(
+                    title: 'pre-release',
+                  ),
                 ],
               ),
             ),
