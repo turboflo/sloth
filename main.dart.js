@@ -71410,7 +71410,7 @@ s.Ec()
 return null},
 $S:449}
 A.HG.prototype={
-K(a,b){return new A.y6(B.Jf,"Flutter Demo",this.c,this.d,!1,null)}}
+K(a,b){return new A.y6(B.Jf,"Sloth",this.c,this.d,!1,null)}}
 A.xo.prototype={
 an(){return new A.Ng(A.a([B.Ho,B.J4,B.YG],t.D),B.q)}}
 A.Ng.prototype={
