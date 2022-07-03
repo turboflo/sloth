@@ -1,3 +1,3 @@
 # Sloth
 
-[web app (pre-release)](https://turboflo.github.io/sloth)
+[Demo (pre-release)](https://turboflo.github.io/sloth)
