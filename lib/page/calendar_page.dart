@@ -50,8 +50,10 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
   showAddEventDialog(BuildContext context) {
     final DefaultSettings defaultSettings = DefaultSettings();
-    final titleCon = TextEditingController();
-    titleCon.text = defaultSettings.eventTitle;
+    final startTimeCon = TextEditingController();
+    final endTimeCon = TextEditingController();
+    startTimeCon.text = defaultSettings.eventTitle.split('-').first.trim();
+    endTimeCon.text = defaultSettings.eventTitle.split('-').last.trim();
     final items = [
       DropdownMenuItem(
         value: EventType.work.name,
@@ -99,7 +101,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         late String title;
         switch (dropdownValue) {
           case 'work':
-            title = titleCon.text;
+            title = '${startTimeCon.text} - ${endTimeCon.text}';
             break;
           case 'vacation':
             title = 'Urlaub';
@@ -149,17 +151,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               ),
               const SizedBox(height: 15),
               if (dropdownValue == EventType.work.name)
-                TextField(
-                  controller: titleCon,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: colors.onBackground.withOpacity(0.5),
-                      ),
-                    ),
-                  ),
-                ),
+                timeRangeFields(startTimeCon, endTimeCon, colors),
             ],
           );
         },
@@ -176,6 +168,43 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
       builder: (BuildContext context) {
         return alert;
       },
+    );
+  }
+
+  Widget timeRangeFields(TextEditingController startTimeCon,
+      TextEditingController endTimeCon, ColorScheme colors) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(
+          child: TextField(
+            controller: startTimeCon,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: colors.onBackground.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+        ),
+        const Text(' - '),
+        Flexible(
+          child: TextField(
+            controller: endTimeCon,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: colors.onBackground.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

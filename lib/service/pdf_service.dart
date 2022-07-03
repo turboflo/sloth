@@ -32,11 +32,19 @@ class PdfService {
       final List<Event> currentEvents =
           events.where((event) => event.day.day == currentDay.day).toList();
 
-      weekdayColumns[currentDay.weekday - 1].add(
-        pw.Column(children: [
-          pw.Text('TESTING'),
-        ]),
-      );
+      if (currentEvents.isNotEmpty) {
+        weekdayColumns[currentDay.weekday - 1].add(
+          pw.Column(children: [
+            pw.Text(currentEvents.last.title),
+          ]),
+        );
+      } else {
+        weekdayColumns[currentDay.weekday - 1].add(
+          pw.Column(children: [
+            pw.Text(''),
+          ]),
+        );
+      }
 
       maxWeekOfMonth = currentDay.weekOfMonth;
       currentDay = currentDay.add(const Duration(days: 1));

@@ -15,6 +15,12 @@ class Event extends HiveObject {
 
   Event({required this.title, required this.type, required this.day});
 
+  factory Event.work(String startTime, String endTime, DateTime day) => Event(
+      title: '$startTime - $endTime', type: EventType.work.name, day: day);
+
+  factory Event.vacation(DateTime day) =>
+      Event(title: 'Urlaub', type: EventType.vacation.name, day: day);
+
   factory Event.fromHoliday(Holiday holiday) => Event(
         title: holiday.name,
         type: EventType.holiday.name,

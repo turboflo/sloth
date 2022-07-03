@@ -10,8 +10,8 @@ class EventLoader {
   final box = Hive.box('settings');
 
   Future<List<Event>> getAll() async => [
-        ...await getFromBoxes(),
         ...await getHolidaysFromAPI(),
+        ...await getFromBoxes(),
       ];
 
   Future<List<Event>> getFromBoxes() async {
