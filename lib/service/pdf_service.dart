@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:pdf/widgets.dart';
+import 'package:sloth/service/default_settings.dart';
 
 import '../main.dart';
 import '../model/event.dart';
@@ -12,6 +12,7 @@ import '../model/event.dart';
 class PdfService {
   Future<void> exportMonth(
       {required int month, required int year, required WidgetRef ref}) async {
+    final defaultSettings = DefaultSettings();
     final pdf = pw.Document();
     final List<Event> events = ref
         .read(eventsProvider)
@@ -33,17 +34,13 @@ class PdfService {
           events.where((event) => event.day.day == currentDay.day).toList();
 
       if (currentEvents.isNotEmpty) {
-        weekdayColumns[currentDay.weekday - 1].add(
-          pw.Column(children: [
-            pw.Text(currentEvents.last.title),
-          ]),
-        );
+        weekdayColumns[currentDay.weekday - 1]
+            .add(generateColumn(currentEvents.last.title));
+      } else if (defaultSettings.isDayValid(currentDay)) {
+        weekdayColumns[currentDay.weekday - 1]
+            .add(generateColumn(defaultSettings.eventTitle));
       } else {
-        weekdayColumns[currentDay.weekday - 1].add(
-          pw.Column(children: [
-            pw.Text(''),
-          ]),
-        );
+        weekdayColumns[currentDay.weekday - 1].add(generateColumn(''));
       }
 
       maxWeekOfMonth = currentDay.weekOfMonth;
