@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:sloth/model/event.dart';
+import 'package:sloth/page/export_page.dart';
 import 'package:sloth/page/settings_page.dart';
 
 import 'service/event_loader.dart';
@@ -76,7 +77,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   int _pageIndex = 0;
   final List<Widget> _pages = [
     const CalendarPage(),
-    Container(),
+    const ExportPage(),
     const SettingsPage(),
   ];
 
