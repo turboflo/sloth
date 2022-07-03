@@ -247,7 +247,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               )
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
         ],
       ),
     );

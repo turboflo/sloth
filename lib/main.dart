@@ -11,6 +11,7 @@ import 'package:sloth/model/event.dart';
 import 'package:sloth/page/settings_page.dart';
 
 import 'service/event_loader.dart';
+import 'widget/sidebar_button.dart';
 
 final eventsProvider =
     ChangeNotifierProvider<EventNotifier>((ref) => EventNotifier());
@@ -125,6 +126,19 @@ class _HomePageState extends ConsumerState<HomePage> {
                       setState(() => _pageIndex = 2);
                     },
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: Text(
+                      'pre-release',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onBackground
+                            .withOpacity(0.2),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -141,40 +155,6 @@ class _HomePageState extends ConsumerState<HomePage> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class SideBarButton extends StatelessWidget {
-  final Function() onPressed;
-  final IconData iconData;
-  final bool isSelected;
-
-  const SideBarButton({
-    Key? key,
-    required this.onPressed,
-    required this.iconData,
-    required this.isSelected,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    return Card(
-      color: isSelected ? colors.primary : null,
-      elevation: 1.5,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: IconButton(
-          onPressed: isSelected ? null : onPressed,
-          icon: Icon(
-            iconData,
-            color: isSelected
-                ? colors.background
-                : colors.onBackground.withOpacity(0.8),
-          ),
-        ),
       ),
     );
   }
