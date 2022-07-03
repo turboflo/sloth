@@ -135,7 +135,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         color: Theme.of(context)
                             .colorScheme
                             .onBackground
-                            .withOpacity(0.2),
+                            .withOpacity(0.3),
                       ),
                     ),
                   )

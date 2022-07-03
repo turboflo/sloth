@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sloth/boxes.dart';
 import 'package:sloth/service/default_settings.dart';
 
 import '../main.dart';
@@ -11,7 +11,7 @@ const int rightFlex = 4;
 
 const Map<String, String> stateSettingMap = {
   'none': 'Keine Anzeigen',
-  'allStates': 'Alle Bundesländer',
+  'allStates': 'Bundesweit',
   'bw': 'Baden-Württemberg',
   'by': 'Bayern',
   'be': 'Berlin',
@@ -38,7 +38,8 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
-  final box = Hive.box('settings');
+  final boxSettings = Boxes.getSettings();
+  final boxEvents = Boxes.getEvents();
   final TextStyle _headerStyle = const TextStyle(
     fontSize: 30,
     fontWeight: FontWeight.bold,
@@ -60,7 +61,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     super.initState();
   }
 
-  Future<void> updateEvents() async {
+  Future<void> reloadEvents() async {
     final eventLoader = EventLoader();
     ref.read(eventsProvider.notifier).replaceAll(await eventLoader.getAll());
   }
@@ -92,7 +93,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             const SizedBox(height: 7.5),
             const Divider(),
             const SizedBox(height: 7.5),
-            resetButton()
+            deleteEventsButton(),
+            resetSettingsButton(),
           ],
         ),
       ),
@@ -127,7 +129,26 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     );
   }
 
-  Widget resetButton() {
+  Widget deleteEventsButton() {
+    return SettingCard(
+      title: const Text('Alle Arbeitstage und Urlaub'),
+      settingMenu: MaterialButton(
+        color: Colors.redAccent,
+        child: const Text(
+          'Löschen',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        onPressed: () {
+          boxEvents.deleteAll(boxEvents.keys);
+          reloadEvents();
+        },
+      ),
+    );
+  }
+
+  Widget resetSettingsButton() {
     return SettingCard(
       title: const Text('Alle Einstellungen'),
       settingMenu: MaterialButton(
@@ -140,7 +161,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         ),
         onPressed: () {
           setState(() {
-            box.deleteAll(box.keys);
+            boxSettings.deleteAll(boxSettings.keys);
           });
         },
       ),
@@ -183,7 +204,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   }
 
   Widget holidaySettings() {
-    String identifier = box.get('holidayIdentifier', defaultValue: 'allStates');
+    String identifier =
+        boxSettings.get('holidayIdentifier', defaultValue: 'allStates');
 
     return SettingCard(
       title: const Text('Feiertage anzeigen'),
@@ -192,8 +214,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         value: identifier,
         items: items,
         onChanged: (String? newValue) {
-          box.put('holidayIdentifier', newValue ?? 'allStates');
-          updateEvents();
+          boxSettings.put('holidayIdentifier', newValue ?? 'allStates');
+          reloadEvents();
           setState(() {
             identifier = newValue!;
           });
