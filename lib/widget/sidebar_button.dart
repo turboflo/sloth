@@ -17,7 +17,7 @@ class SideBarButton extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     return Card(
       color: isSelected ? colors.primary : null,
-      elevation: 1.5,
+      elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: IconButton(

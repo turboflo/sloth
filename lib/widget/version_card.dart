@@ -11,13 +11,12 @@ class VersionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final color = colors.onBackground.withOpacity(0.3);
 
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
         side: BorderSide(
-          color: color,
+          color: colors.onBackground.withOpacity(0.2),
         ),
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
@@ -27,7 +26,7 @@ class VersionCard extends StatelessWidget {
           title,
           style: TextStyle(
             fontSize: 9,
-            color: color,
+            color: colors.onBackground.withOpacity(0.3),
           ),
         ),
       ),

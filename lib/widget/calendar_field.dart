@@ -12,41 +12,6 @@ class CalendarField extends ConsumerWidget {
   CalendarField({Key? key, required this.day, required this.focusedDay})
       : super(key: key);
 
-  Widget getHolidayIndicator(bool isSelected, ColorScheme colors) {
-    return Icon(
-      eventIcons[EventType.holiday.name],
-      color: isSelected ? colors.background : colors.primary,
-      size: 12,
-    );
-  }
-
-  Widget getIndicator(Event event, bool isSelected, ColorScheme colors) =>
-      Positioned(
-        right: 5,
-        bottom: 5,
-        child: Row(
-          children: [
-            Icon(
-              eventIcons[event.type],
-              color: isSelected
-                  ? colors.background
-                  : colors.onBackground.withOpacity(0.5),
-              size: 12,
-            ),
-            const SizedBox(width: 5),
-            Text(
-              event.title,
-              style: TextStyle(
-                color: isSelected
-                    ? colors.background
-                    : colors.onBackground.withOpacity(0.5),
-                fontSize: 12,
-              ),
-            ),
-          ],
-        ),
-      );
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
@@ -84,7 +49,7 @@ class CalendarField extends ConsumerWidget {
     }
 
     return Card(
-      elevation: 1.5,
+      elevation: 2,
       color: isSelected ? colors.primary : null,
       child: Stack(
         children: [
@@ -146,4 +111,39 @@ class CalendarField extends ConsumerWidget {
       ),
     );
   }
+
+  Widget getHolidayIndicator(bool isSelected, ColorScheme colors) {
+    return Icon(
+      eventIcons[EventType.holiday.name],
+      color: isSelected ? colors.background : colors.primary,
+      size: 12,
+    );
+  }
+
+  Widget getIndicator(Event event, bool isSelected, ColorScheme colors) =>
+      Positioned(
+        right: 5,
+        bottom: 5,
+        child: Row(
+          children: [
+            Icon(
+              eventIcons[event.type],
+              color: isSelected
+                  ? colors.background
+                  : colors.onBackground.withOpacity(0.5),
+              size: 12,
+            ),
+            const SizedBox(width: 5),
+            Text(
+              event.title,
+              style: TextStyle(
+                color: isSelected
+                    ? colors.background
+                    : colors.onBackground.withOpacity(0.5),
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      );
 }
