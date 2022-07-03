@@ -75,12 +75,12 @@ class _HomePageState extends ConsumerState<HomePage> {
   final List<Widget> _pages = [
     const CalendarPage(),
     Container(),
-    Container(),
     const SettingsPage(),
   ];
 
   @override
   void initState() {
+    Hive.box('settings').deleteFromDisk;
     loadEvents();
     super.initState();
   }
@@ -111,25 +111,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                     },
                   ),
                   SideBarButton(
-                    iconData: Icons.event_repeat,
+                    iconData: Icons.picture_as_pdf,
                     isSelected: _pageIndex == 1,
                     onPressed: () {
                       setState(() => _pageIndex = 1);
                     },
                   ),
-                  SideBarButton(
-                    iconData: Icons.picture_as_pdf,
-                    isSelected: _pageIndex == 2,
-                    onPressed: () {
-                      setState(() => _pageIndex = 2);
-                    },
-                  ),
                   Expanded(child: Container()),
                   SideBarButton(
                     iconData: Icons.settings,
-                    isSelected: _pageIndex == 3,
+                    isSelected: _pageIndex == 2,
                     onPressed: () {
-                      setState(() => _pageIndex = 3);
+                      setState(() => _pageIndex = 2);
                     },
                   ),
                 ],

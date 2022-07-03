@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sloth/main.dart';
 import 'package:sloth/model/event.dart';
-import 'package:sloth/service/default_service.dart';
+import 'package:sloth/service/default_settings.dart';
 
 class CalendarField extends ConsumerWidget {
   final DateTime day;
   final DateTime focusedDay;
-  final DefaultService defaultService = DefaultService();
+  final DefaultSettings defaultSettings = DefaultSettings();
 
   CalendarField({Key? key, required this.day, required this.focusedDay})
       : super(key: key);
@@ -136,9 +136,9 @@ class CalendarField extends ConsumerWidget {
           if (!isVacation &&
               !isWorkDay &&
               !isHoliday &&
-              defaultService.isDayValid(day))
+              defaultSettings.isDayValid(day))
             getIndicator(
-              defaultService.getEvent(day),
+              defaultSettings.getEvent(day),
               isSelected,
               colors,
             ),

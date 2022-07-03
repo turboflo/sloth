@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sloth/boxes.dart';
 import 'package:sloth/main.dart';
 import 'package:sloth/model/event.dart';
+import 'package:sloth/service/default_settings.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../widget/calendar_field.dart';
@@ -48,17 +49,9 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   }
 
   showAddEventDialog(BuildContext context) {
+    final DefaultSettings defaultSettings = DefaultSettings();
     final titleCon = TextEditingController();
-    // eventTypes
-    //                   .map((e) => DropdownMenuItem<String>(
-    //                         value: e,
-    //                         child: Padding(
-    //                           padding:
-    //                               const EdgeInsets.symmetric(horizontal: 10),
-    //                           child: Text(capitalize(e)),
-    //                         ),
-    //                       ))
-    //                   .toList(),
+    titleCon.text = defaultSettings.eventTitle;
     final items = [
       DropdownMenuItem(
         value: EventType.work.name,
@@ -103,8 +96,19 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
     Widget continueButton = TextButton(
       child: const Text("Speichern"),
       onPressed: () {
+        late String title;
+        switch (dropdownValue) {
+          case 'work':
+            title = titleCon.text;
+            break;
+          case 'vacation':
+            title = 'Urlaub';
+            break;
+          default:
+            title = '';
+        }
         addEvent(
-          title: titleCon.text,
+          title: title,
           eventType: dropdownValue,
           day: _focusedCalendarDate,
         );
@@ -144,19 +148,18 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                 ),
               ),
               const SizedBox(height: 15),
-              TextField(
-                controller: titleCon,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                  border: OutlineInputBorder(
-                    // gapPadding: 5,
-                    borderSide: BorderSide(
-                      color: colors.onBackground.withOpacity(0.5),
+              if (dropdownValue == EventType.work.name)
+                TextField(
+                  controller: titleCon,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: colors.onBackground.withOpacity(0.5),
+                      ),
                     ),
                   ),
-                  // labelText: 'Title',
                 ),
-              ),
             ],
           );
         },
