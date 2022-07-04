@@ -29,7 +29,7 @@ class MonthSwitchButton extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
-              color: isSelected ? Colors.white : null,
+              color: isSelected ? colors.background : null,
             ),
           ),
         ),

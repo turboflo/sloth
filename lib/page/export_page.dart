@@ -29,6 +29,7 @@ class ExportPage extends ConsumerStatefulWidget {
 class _ExportPageState extends ConsumerState<ExportPage> {
   final PdfService pdfService = PdfService();
   late int selectedMonth;
+  late ColorScheme colors;
   var exportStatusText = '';
 
   @override
@@ -39,7 +40,7 @@ class _ExportPageState extends ConsumerState<ExportPage> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    colors = Theme.of(context).colorScheme;
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,9 +78,9 @@ class _ExportPageState extends ConsumerState<ExportPage> {
           Row(
             children: [
               Expanded(child: Container()),
-              getExportButton(colors.primary),
+              getExportButton(),
               const SizedBox(width: 5),
-              getShareButton(colors.primary),
+              getShareButton(),
               Expanded(child: Container()),
             ],
           ),
@@ -93,9 +94,9 @@ class _ExportPageState extends ConsumerState<ExportPage> {
     );
   }
 
-  MaterialButton getExportButton(Color? color) {
+  MaterialButton getExportButton() {
     return MaterialButton(
-      color: color,
+      color: colors.primary,
       onPressed: (() async {
         await pdfService.exportMonth(
             month: selectedMonth + 1,
@@ -110,16 +111,14 @@ class _ExportPageState extends ConsumerState<ExportPage> {
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Row(
-          children: const [
+          children: [
             Text(
               'Als PDF exportieren ',
-              style: TextStyle(
-                color: Colors.white,
-              ),
+              style: TextStyle(color: colors.background),
             ),
             Icon(
               Icons.file_download,
-              color: Colors.white,
+              color: colors.background,
             )
           ],
         ),
@@ -127,9 +126,9 @@ class _ExportPageState extends ConsumerState<ExportPage> {
     );
   }
 
-  MaterialButton getShareButton(Color? color) {
+  MaterialButton getShareButton() {
     return MaterialButton(
-      color: color,
+      color: colors.primary,
       onPressed: (() async {
         await pdfService.exportMonth(
             month: selectedMonth + 1,
@@ -137,11 +136,11 @@ class _ExportPageState extends ConsumerState<ExportPage> {
             ref: ref,
             exportType: ExportType.share);
       }),
-      child: const Padding(
-          padding: EdgeInsets.all(10),
+      child: Padding(
+          padding: const EdgeInsets.all(10),
           child: Icon(
             Icons.ios_share,
-            color: Colors.white,
+            color: colors.background,
           )),
     );
   }
