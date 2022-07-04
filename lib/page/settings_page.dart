@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sloth/boxes.dart';
 import 'package:sloth/service/default_settings.dart';
+import 'package:sloth/widget/time_range_field.dart';
 
 import '../main.dart';
 import '../service/event_loader.dart';
@@ -103,27 +104,26 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   SettingCard defaultWorktimeSettings() {
     DefaultSettings defaultSettings = DefaultSettings();
-    TextEditingController con = TextEditingController();
-    con.text = defaultSettings.eventTitle;
+    TextEditingController startTimeCon = TextEditingController();
+    TextEditingController endTimeCon = TextEditingController();
+    startTimeCon.text = defaultSettings.eventTitle.split('-').first;
+    endTimeCon.text = defaultSettings.eventTitle.split('-').last;
     return SettingCard(
       title: const Text('Standard Uhrzeit'),
       settingMenu: Flexible(
-        child: TextField(
-          controller: con,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-            border: OutlineInputBorder(
-              // gapPadding: 5,
-              borderSide: BorderSide(
-                color:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+        child: Row(
+          children: [
+            Expanded(
+              child: TimeRangeField(
+                startTimeCon: startTimeCon,
+                endTimeCon: endTimeCon,
+                onChange: (_) => defaultSettings
+                    .setEventTitle('${startTimeCon.text} - ${endTimeCon.text}'),
               ),
             ),
-            hintText: '00:00 - 00:00',
-          ),
-          onChanged: (_) {
-            defaultSettings.setEventTitle(con.text);
-          },
+            Expanded(child: Container()),
+            Expanded(child: Container()),
+          ],
         ),
       ),
     );

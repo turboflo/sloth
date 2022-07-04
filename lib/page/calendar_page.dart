@@ -7,6 +7,7 @@ import 'package:sloth/service/default_settings.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../widget/calendar_field.dart';
+import '../widget/time_range_field.dart';
 
 class CalendarPage extends ConsumerStatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -151,7 +152,8 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               ),
               const SizedBox(height: 15),
               if (dropdownValue == EventType.work.name)
-                timeRangeFields(startTimeCon, endTimeCon, colors),
+                TimeRangeField(
+                    startTimeCon: startTimeCon, endTimeCon: endTimeCon),
             ],
           );
         },
@@ -168,43 +170,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
       builder: (BuildContext context) {
         return alert;
       },
-    );
-  }
-
-  Widget timeRangeFields(TextEditingController startTimeCon,
-      TextEditingController endTimeCon, ColorScheme colors) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Flexible(
-          child: TextField(
-            controller: startTimeCon,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: colors.onBackground.withOpacity(0.5),
-                ),
-              ),
-            ),
-          ),
-        ),
-        const Text(' - '),
-        Flexible(
-          child: TextField(
-            controller: endTimeCon,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: colors.onBackground.withOpacity(0.5),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 

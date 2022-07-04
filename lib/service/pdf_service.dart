@@ -91,9 +91,8 @@ class PdfService {
     );
 
     final output = await getDownloadsDirectory();
-    final file = File("${output!.path}/example.pdf");
+    final file = File("${output!.path}/$year-$month.pdf");
     await file.writeAsBytes(await pdf.save());
-    print('done');
   }
 
   pw.Column generateColumn(String text) => pw.Column(children: [
