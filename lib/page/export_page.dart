@@ -72,7 +72,8 @@ class _ExportPageState extends ConsumerState<ExportPage> {
               ),
             ),
           ),
-          const Divider(),
+          // const Divider(),
+          const SizedBox(height: 15),
           Row(
             children: [
               Expanded(child: Container()),
