@@ -132,9 +132,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       setState(() => _pageIndex = 2);
                     },
                   ),
-                  const VersionCard(
-                    title: 'pre-release',
-                  ),
+                  const VersionCard(),
                 ],
               ),
             ),
