@@ -4,14 +4,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/widgets.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sloth/service/default_settings.dart';
 
 import '../main.dart';
 import '../model/event.dart';
 
+enum ExportType {
+  downloads,
+  share,
+}
+
 class PdfService {
   Future<void> exportMonth(
-      {required int month, required int year, required WidgetRef ref}) async {
+      {required int month,
+      required int year,
+      required WidgetRef ref,
+      required ExportType exportType}) async {
     final defaultSettings = DefaultSettings();
     final pdf = pw.Document();
     final List<Event> events = ref
@@ -89,9 +99,30 @@ class PdfService {
         },
       ),
     );
+    switch (exportType) {
+      case ExportType.downloads:
+        _saveInDownloads(pdf: pdf, fileName: '$year-$month.pdf');
+        break;
+      case ExportType.share:
+        _share(pdf: pdf, fileName: '$year-$month.pdf');
+        break;
+      default:
+    }
+  }
 
+  Future<void> _share({required Document pdf, required String fileName}) async {
+    final output = await getTemporaryDirectory();
+    final path = "${output.path}/$fileName";
+    final file = File(path);
+    await file.writeAsBytes(await pdf.save());
+    Share.shareFiles([path]);
+  }
+
+  Future<void> _saveInDownloads(
+      {required Document pdf, required String fileName}) async {
     final output = await getDownloadsDirectory();
-    final file = File("${output!.path}/$year-$month.pdf");
+    final path = "${output!.path}/$fileName";
+    final file = File(path);
     await file.writeAsBytes(await pdf.save());
   }
 

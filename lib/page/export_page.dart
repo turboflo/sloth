@@ -78,6 +78,8 @@ class _ExportPageState extends ConsumerState<ExportPage> {
             children: [
               Expanded(child: Container()),
               getExportButton(colors.primary),
+              const SizedBox(width: 5),
+              getShareButton(colors.primary),
               Expanded(child: Container()),
             ],
           ),
@@ -96,7 +98,10 @@ class _ExportPageState extends ConsumerState<ExportPage> {
       color: color,
       onPressed: (() async {
         await pdfService.exportMonth(
-            month: selectedMonth + 1, year: 2022, ref: ref);
+            month: selectedMonth + 1,
+            year: 2022,
+            ref: ref,
+            exportType: ExportType.downloads);
         setState(() {
           exportStatusText =
               '2022-${selectedMonth + 1}.pdf in Downloads gespeichert';
@@ -119,6 +124,25 @@ class _ExportPageState extends ConsumerState<ExportPage> {
           ],
         ),
       ),
+    );
+  }
+
+  MaterialButton getShareButton(Color? color) {
+    return MaterialButton(
+      color: color,
+      onPressed: (() async {
+        await pdfService.exportMonth(
+            month: selectedMonth + 1,
+            year: 2022,
+            ref: ref,
+            exportType: ExportType.share);
+      }),
+      child: const Padding(
+          padding: EdgeInsets.all(10),
+          child: Icon(
+            Icons.ios_share,
+            color: Colors.white,
+          )),
     );
   }
 }
