@@ -5,9 +5,12 @@ import 'package:sloth/main.dart';
 import 'package:sloth/model/event.dart';
 import 'package:sloth/service/default_settings.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 
 import '../widget/calendar_field.dart';
 import '../widget/time_range_field.dart';
+import '../widget/wave_background.dart';
 
 class CalendarPage extends ConsumerStatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -176,75 +179,88 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () => showAddEventDialog(context),
-      ),
-      body: Column(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Stack(
         children: [
-          TableCalendar(
-            locale: 'de_DE',
-            //
-            calendarBuilders: CalendarBuilders(
-              defaultBuilder: (context, day, focusedDay) => CalendarField(
-                day: day,
-                focusedDay: focusedDay,
+          Positioned(
+            bottom: 15,
+            right: 5,
+            child: FloatingActionButton(
+              backgroundColor: colors.background,
+              child: Icon(
+                Icons.add,
+                color: colors.onBackground,
               ),
-              selectedBuilder: (context, day, focusedDay) => CalendarField(
-                day: day,
-                focusedDay: focusedDay,
-              ),
-              todayBuilder: (context, day, focusedDay) => CalendarField(
-                day: day,
-                focusedDay: focusedDay,
-              ),
-              outsideBuilder: (context, day, focusedDay) => CalendarField(
-                day: day,
-                focusedDay: focusedDay,
-              ),
+              onPressed: () => showAddEventDialog(context),
             ),
-            //
-            focusedDay: _focusedCalendarDate,
-            firstDay: _initialCalendarDate,
-            lastDay: _lastCalendarDate,
-            availableCalendarFormats: const {CalendarFormat.month: 'Month'},
-            calendarFormat: CalendarFormat.month,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-
-            selectedDayPredicate: (currentSelectedDate) {
-              return (isSameDay(selectedCalendarDate!, currentSelectedDate));
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              if (!isSameDay(selectedCalendarDate, selectedDay)) {
-                setState(() {
-                  selectedCalendarDate = selectedDay;
-                  _focusedCalendarDate = focusedDay;
-                });
-              }
-            },
           ),
-          Expanded(child: Container()),
-          Row(
+          Column(
             children: [
-              Icon(
-                eventIcons[EventType.holiday.name],
-                size: 15,
-                color: colors.onBackground.withOpacity(0.5),
-              ),
-              Text(
-                ' Feiertag',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: colors.onBackground.withOpacity(0.5),
+              TableCalendar(
+                locale: 'de_DE',
+                //
+                calendarBuilders: CalendarBuilders(
+                  defaultBuilder: (context, day, focusedDay) => CalendarField(
+                    day: day,
+                    focusedDay: focusedDay,
+                  ),
+                  selectedBuilder: (context, day, focusedDay) => CalendarField(
+                    day: day,
+                    focusedDay: focusedDay,
+                  ),
+                  todayBuilder: (context, day, focusedDay) => CalendarField(
+                    day: day,
+                    focusedDay: focusedDay,
+                  ),
+                  outsideBuilder: (context, day, focusedDay) => CalendarField(
+                    day: day,
+                    focusedDay: focusedDay,
+                  ),
                 ),
-              )
+                //
+                focusedDay: _focusedCalendarDate,
+                firstDay: _initialCalendarDate,
+                lastDay: _lastCalendarDate,
+                availableCalendarFormats: const {CalendarFormat.month: 'Month'},
+                calendarFormat: CalendarFormat.month,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+
+                selectedDayPredicate: (currentSelectedDate) {
+                  return (isSameDay(
+                      selectedCalendarDate!, currentSelectedDate));
+                },
+                onDaySelected: (selectedDay, focusedDay) {
+                  if (!isSameDay(selectedCalendarDate, selectedDay)) {
+                    setState(() {
+                      selectedCalendarDate = selectedDay;
+                      _focusedCalendarDate = focusedDay;
+                    });
+                  }
+                },
+              ),
+              Expanded(child: Container()),
+              Row(
+                children: [
+                  Icon(
+                    eventIcons[EventType.holiday.name],
+                    size: 15,
+                    color: colors.background.withOpacity(0.5),
+                  ),
+                  Text(
+                    ' Feiertag',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: colors.background.withOpacity(0.5),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 9),
             ],
           ),
-          const SizedBox(height: 9),
         ],
       ),
     );
-    ;
   }
 }

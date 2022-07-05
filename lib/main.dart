@@ -11,6 +11,7 @@ import 'package:json_theme/json_theme.dart';
 import 'package:sloth/model/event.dart';
 import 'package:sloth/page/export_page.dart';
 import 'package:sloth/page/settings_page.dart';
+import 'package:sloth/widget/wave_background.dart';
 
 import 'service/event_loader.dart';
 import 'widget/sidebar_button.dart';
@@ -103,8 +104,6 @@ class _HomePageState extends ConsumerState<HomePage> {
       body: Row(
         children: [
           Container(
-            height: double.infinity,
-            // width: double.infinity,
             color: Theme.of(context).colorScheme.background,
             child: Padding(
               padding: const EdgeInsets.all(5),
@@ -143,9 +142,12 @@ class _HomePageState extends ConsumerState<HomePage> {
             color: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: _pages[_pageIndex],
+            child: Stack(
+              children: [
+                if (_pageIndex != 2)
+                  WaveBackground(colors: Theme.of(context).colorScheme),
+                _pages[_pageIndex],
+              ],
             ),
           ),
         ],
