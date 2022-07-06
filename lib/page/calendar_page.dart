@@ -9,6 +9,7 @@ import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
 import '../widget/calendar_field.dart';
+import '../widget/event_list.dart';
 import '../widget/time_range_field.dart';
 import '../widget/wave_background.dart';
 
@@ -183,18 +184,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Stack(
         children: [
-          Positioned(
-            bottom: 15,
-            right: 5,
-            child: FloatingActionButton(
-              backgroundColor: colors.background,
-              child: Icon(
-                Icons.add,
-                color: colors.onBackground,
-              ),
-              onPressed: () => showAddEventDialog(context),
-            ),
-          ),
           Column(
             children: [
               TableCalendar(
@@ -239,7 +228,8 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                   }
                 },
               ),
-              Expanded(child: Container()),
+              Expanded(child: EventList(day: _focusedCalendarDate)),
+              // Expanded(child: Container()),
               Row(
                 children: [
                   Icon(
@@ -258,6 +248,18 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               ),
               const SizedBox(height: 9),
             ],
+          ),
+          Positioned(
+            bottom: 15,
+            right: 5,
+            child: FloatingActionButton(
+              backgroundColor: colors.background,
+              child: Icon(
+                Icons.add,
+                color: colors.onBackground,
+              ),
+              onPressed: () => showAddEventDialog(context),
+            ),
           ),
         ],
       ),

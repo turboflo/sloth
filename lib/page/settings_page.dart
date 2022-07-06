@@ -79,10 +79,23 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: Text(
-                'Einstellungen',
-                style: _headerStyle,
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Row(
+                children: [
+                  Text(
+                    'Einstellungen',
+                    style: _headerStyle,
+                  ),
+                  Expanded(child: Container()),
+                  IconButton(
+                    onPressed: () => showLicensePage(context: context),
+                    splashRadius: 20,
+                    icon: Icon(
+                      Icons.info,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 15),
