@@ -1,7 +1,7 @@
 
 # Sloth
 
-Simple tool to generate a time report for work.
+An easy tool for creating a timesheet.
 
 ## Screenshots
 
