@@ -1,7 +1,7 @@
 
 # Sloth
 
-🦥 An easy tool for creating a timesheet.
+🦥 An easy tool for creating a timesheet
 
 💙 Built with [Flutter](https://flutter.dev/)
 
