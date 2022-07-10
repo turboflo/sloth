@@ -1,7 +1,7 @@
 
 # Sloth
 
-Simple tool to generate a time report for work
+Simple tool to generate a time report for work.
 
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/turboflo/sloth/dev?style=flat-square)
 
