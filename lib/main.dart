@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,8 +26,12 @@ final eventsProvider =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await DesktopWindow.setWindowSize(const Size(1000, 620));
-  await DesktopWindow.setMinWindowSize(const Size(1000, 620));
+  if (!kIsWeb) {
+    if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
+      await DesktopWindow.setWindowSize(const Size(1000, 620));
+      await DesktopWindow.setMinWindowSize(const Size(1000, 620));
+    }
+  }
 
   final themeStr = await rootBundle.loadString('assets/theme_light.json');
   final themeJson = jsonDecode(themeStr);

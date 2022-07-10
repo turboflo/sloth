@@ -50,6 +50,8 @@ dependencies:
   wave: ^0.2.2
   url_launcher: ^6.1.4
   new_keyboard_shortcuts: ^0.1.4
+  file_saver: ^0.1.0
+  device_info_plus: ^4.0.0
   
   
 

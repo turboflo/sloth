@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -11,17 +12,12 @@ import 'package:sloth/service/default_settings.dart';
 import '../main.dart';
 import '../model/event.dart';
 
-enum ExportType {
-  downloads,
-  share,
-}
-
 class PdfService {
-  Future<void> exportMonth(
-      {required int month,
-      required int year,
-      required WidgetRef ref,
-      required ExportType exportType}) async {
+  Future<void> exportMonth({
+    required int month,
+    required int year,
+    required WidgetRef ref,
+  }) async {
     final defaultSettings = DefaultSettings();
     final pdf = pw.Document();
     final List<Event> events = ref
@@ -99,31 +95,13 @@ class PdfService {
         },
       ),
     );
-    switch (exportType) {
-      case ExportType.downloads:
-        _saveInDownloads(pdf: pdf, fileName: '$year-$month.pdf');
-        break;
-      case ExportType.share:
-        _share(pdf: pdf, fileName: '$year-$month.pdf');
-        break;
-      default:
-    }
+    await _download(pdf: pdf, fileName: '$year-$month.pdf');
   }
 
-  Future<void> _share({required Document pdf, required String fileName}) async {
-    final output = await getTemporaryDirectory();
-    final path = "${output.path}/$fileName";
-    final file = File(path);
-    await file.writeAsBytes(await pdf.save());
-    Share.shareFiles([path]);
-  }
-
-  Future<void> _saveInDownloads(
+  Future<void> _download(
       {required Document pdf, required String fileName}) async {
-    final output = await getDownloadsDirectory();
-    final path = "${output!.path}/$fileName";
-    final file = File(path);
-    await file.writeAsBytes(await pdf.save());
+    final bytes = await pdf.save();
+    await FileSaver.instance.saveFile(fileName, bytes, '');
   }
 
   pw.Column generateColumn(String text) => pw.Column(children: [
