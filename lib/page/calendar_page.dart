@@ -5,13 +5,10 @@ import 'package:sloth/main.dart';
 import 'package:sloth/model/event.dart';
 import 'package:sloth/service/default_settings.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:wave/config.dart';
-import 'package:wave/wave.dart';
 
 import '../widget/calendar_field.dart';
 import '../widget/event_list.dart';
 import '../widget/time_range_field.dart';
-import '../widget/wave_background.dart';
 
 class CalendarPage extends ConsumerStatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);

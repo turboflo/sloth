@@ -4,7 +4,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sloth/boxes.dart';
 import 'package:sloth/service/default_settings.dart';
 import 'package:sloth/widget/time_range_field.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../main.dart';

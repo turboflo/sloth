@@ -38,15 +38,6 @@ class EventList extends ConsumerWidget {
         child: ListTile(
           leading: Icon(eventIcons[items[index].type]),
           title: Text(items[index].title),
-          trailing: items[index].type != 'holiday' && !isDefault && false
-              ? IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.redAccent,
-                  ),
-                )
-              : null,
         ),
       ),
     );
