@@ -103,7 +103,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                         children: [
                           const Divider(),
                           InkWell(
-                            child: const Text('Repositorie'),
+                            child: const Text('Repository'),
                             onTap: () => launchUrlString(
                                 'https://github.com/turboflo/sloth'),
                           ),
