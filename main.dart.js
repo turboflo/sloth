@@ -80200,7 +80200,7 @@ s=t.N
 r=A.a([A.arO(new A.bN(B.cZ,A.arU(A.a([A.h0(j.h(0,"work"),o,o),B.oy,B.a9N],i),B.a2,B.aN,o,B.V,B.a_,o,o,B.bL),o),"work",s),A.arO(new A.bN(B.cZ,A.arU(A.a([A.h0(j.h(0,m),o,o),B.oy,B.a9B],i),B.a2,B.aN,o,B.V,B.a_,o,o,B.bL),o),m,s)],t._t)
 l.a=B.c.gK(["work","holiday"])
 q=A.aed(B.a9H,new A.ahK(a),o)
-p=A.aed(B.a9J,new A.ahL(l,this,h,g,a),o)
+p=A.aed(B.a9I,new A.ahL(l,this,h,g,a),o)
 s=this.x
 s=A.b9(""+A.cu(s)+"."+A.aQ(s)+"."+A.bo(s),o,o,o,o,o,o)
 A.auB(o,new A.ahM(A.arj(A.a([q,p],i),new A.Cw(new A.ahN(l,r,h,g),o),o,!1,s)),a,o,!0,k)},
@@ -80355,7 +80355,7 @@ o.scr(0,B.c.gK(q.fI(0,r,"").split("-")))
 n.scr(0,B.c.gN(q.fI(0,r,"").split("-")))
 return new A.nH(B.a9D,new A.iV(1,B.d_,A.fc(A.a([A.iU(new A.D0(o,n,new A.amT(new A.p3(q),o,n),s)),A.iU(A.bS(s,s,B.q,s,s,s,s,s,s,s,s,s,s,s)),A.iU(A.bS(s,s,B.q,s,s,s,s,s,s,s,s,s,s,s))],t.p),B.a2,B.V,B.a_),s),s)},
 abv(){return new A.nH(B.a9E,A.a4R(B.a9G,B.CP,null,new A.amU(this)),null)},
-agD(){return new A.nH(B.a9K,A.a4R(B.a9F,B.CP,null,new A.amZ(this)),null)},
+agD(){return new A.nH(B.a9J,A.a4R(B.a9F,B.CP,null,new A.amZ(this)),null)},
 abt(){var s,r=null,q=t.T.a($.hl().f3("settings",!1,t.z)),p=new A.p3(q),o=["Mo","Di","Mi","Do","Fr","Sa","So"],n=J.xS(q.fI(0,"defaultWeekdays",A.a([],t.t)),t.S),m=A.a([],t.p)
 for(s=1;s<=7;++s){m.push(A.b9(o[s-1],r,r,r,r,r,r))
 m.push(new A.ys(n.t(n,s),new A.amS(this,n,s,p),r))
@@ -80374,7 +80374,7 @@ var $async$$0=A.a6(function(a,b){if(a===1)return A.a2(b,r)
 while(true)switch(s){case 0:s=2
 return A.a9(A.LG(),$async$$0)
 case 2:p=b.c
-A.aPq(new A.ui(A.aJg(null,null,new A.t1("assets/sloth.png",null,null)),null),"\xa92022 Florian Hegenbarth","Sloth",p,A.a([B.dA,A.na(!1,null,!0,B.a9I,null,!0,null,null,null,null,null,null,null,null,null,new A.amO(),null,null,null),B.dA,A.na(!1,null,!0,B.a9A,null,!0,null,null,null,null,null,null,null,null,null,new A.amP(),null,null,null),B.dA],t.p),q.a)
+A.aPq(new A.ui(A.aJg(null,null,new A.t1("assets/sloth.png",null,null)),null),"\xa92022 Florian Hegenbarth","Sloth",p,A.a([B.dA,A.na(!1,null,!0,B.a9L,null,!0,null,null,null,null,null,null,null,null,null,new A.amO(),null,null,null),B.dA,A.na(!1,null,!0,B.a9A,null,!0,null,null,null,null,null,null,null,null,null,new A.amP(),null,null,null),B.dA],t.p),q.a)
 return A.a3(null,r)}})
 return A.a4($async$$0,r)},
 $S:46}
@@ -80678,7 +80678,7 @@ else{q=r.cx
 q=A.an(204,q.gl(q)>>>16&255,q.gl(q)>>>8&255,q.gl(q)&255)}return A.oS(new A.bN(B.c9,A.Kh(s,A.h0(this.d,q,s),s,o,s,s),s),s,p,2,s,s)}}
 A.D0.prototype={
 I(a,b){var s=null,r=this.e,q=A.X(b).as.cx,p=B.d.aw(127.5)
-return A.fc(A.a([new A.iV(1,B.d_,A.ayy(this.c,A.as5(s,new A.hE(4,B.dt,new A.c3(A.an(p,q.gl(q)>>>16&255,q.gl(q)>>>8&255,q.gl(q)&255),1,B.aB)),s,B.cZ,s,s,s,s,!0,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s),A.a([new A.zb(A.b8("^(?:[01]?\\d|2[0-3])(?::(?:[0-5]\\d?)?)?$",!0,!1),!0,"")],t.VS),r),s),B.a9L,new A.iV(1,B.d_,A.ayy(this.d,A.as5(s,new A.hE(4,B.dt,new A.c3(A.an(p,q.gl(q)>>>16&255,q.gl(q)>>>8&255,q.gl(q)&255),1,B.aB)),s,B.cZ,s,s,s,s,!0,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s),s,r),s)],t.p),B.a2,B.eY,B.a_)}}
+return A.fc(A.a([new A.iV(1,B.d_,A.ayy(this.c,A.as5(s,new A.hE(4,B.dt,new A.c3(A.an(p,q.gl(q)>>>16&255,q.gl(q)>>>8&255,q.gl(q)&255),1,B.aB)),s,B.cZ,s,s,s,s,!0,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s),A.a([new A.zb(A.b8("^(?:[01]?\\d|2[0-3])(?::(?:[0-5]\\d?)?)?$",!0,!1),!0,"")],t.VS),r),s),B.a9K,new A.iV(1,B.d_,A.ayy(this.d,A.as5(s,new A.hE(4,B.dt,new A.c3(A.an(p,q.gl(q)>>>16&255,q.gl(q)>>>8&255,q.gl(q)&255),1,B.aB)),s,B.cZ,s,s,s,s,!0,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s),s,r),s)],t.p),B.a2,B.eY,B.a_)}}
 A.Pi.prototype={
 I(a,b){var s=null,r=A.X(b).as,q=r.cx
 q=A.an(51,q.gl(q)>>>16&255,q.gl(q)>>>8&255,q.gl(q)&255)
@@ -88813,10 +88813,10 @@ B.Fv=new A.j(!0,B.r,null,null,null,null,null,null,null,null,null,null,null,null,
 B.a9F=new A.dI("Zur\xfccksetzen",null,B.Fv,null,null,null,null,null,null)
 B.a9G=new A.dI("L\xf6schen",null,B.Fv,null,null,null,null,null,null)
 B.a9H=new A.dI("Abbrechen",null,null,null,null,null,null,null,null)
-B.a9I=new A.dI("Repositorie",null,null,null,null,null,null,null,null)
-B.a9J=new A.dI("Speichern",null,null,null,null,null,null,null,null)
-B.a9K=new A.dI("Alle Einstellungen",null,null,null,null,null,null,null,null)
-B.a9L=new A.dI(" - ",null,null,null,null,null,null,null,null)
+B.a9I=new A.dI("Speichern",null,null,null,null,null,null,null,null)
+B.a9J=new A.dI("Alle Einstellungen",null,null,null,null,null,null,null,null)
+B.a9K=new A.dI(" - ",null,null,null,null,null,null,null,null)
+B.a9L=new A.dI("Repository",null,null,null,null,null,null,null,null)
 B.a9M=new A.dI("Standard Arbeitstage",null,null,null,null,null,null,null,null)
 B.a9N=new A.dI("Arbeit",null,null,null,null,null,null,null,null)
 B.acV=new A.P_(0,"system")
