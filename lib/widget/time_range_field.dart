@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TimeRangeField extends StatelessWidget {
   final TextEditingController startTimeCon;
@@ -32,6 +33,11 @@ class TimeRangeField extends StatelessWidget {
                 ),
               ),
             ),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(
+                RegExp(r'^(?:[01]?\d|2[0-3])(?::(?:[0-5]\d?)?)?$'),
+              ),
+            ],
           ),
         ),
         const Text(' - '),
