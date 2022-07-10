@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sloth/boxes.dart';
 import 'package:sloth/service/default_settings.dart';
 import 'package:sloth/widget/time_range_field.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../main.dart';
 import '../service/event_loader.dart';
@@ -88,7 +91,34 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   ),
                   Expanded(child: Container()),
                   IconButton(
-                    onPressed: () => showLicensePage(context: context),
+                    // onPressed: () => showLicensePage(context: context),
+                    onPressed: () async {
+                      var info = await PackageInfo.fromPlatform();
+                      showAboutDialog(
+                        applicationName: 'Sloth',
+                        applicationVersion: info.version,
+                        applicationIcon: Image.asset(
+                          'assets/sloth.png',
+                        ),
+                        applicationLegalese: '©2022 Florian Hegenbarth',
+                        children: [
+                          const Divider(),
+                          InkWell(
+                            child: const Text('Repositorie'),
+                            onTap: () => launchUrlString(
+                                'https://github.com/turboflo/sloth'),
+                          ),
+                          const Divider(),
+                          InkWell(
+                            child: const Text('About me'),
+                            onTap: () =>
+                                launchUrlString('https://hegenbarth.dev'),
+                          ),
+                          const Divider(),
+                        ],
+                        context: context,
+                      );
+                    },
                     splashRadius: 20,
                     icon: Icon(
                       Icons.info,

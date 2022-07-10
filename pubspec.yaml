@@ -48,6 +48,7 @@ dependencies:
   package_info_plus: ^1.4.2
   share_plus: ^4.0.10
   wave: ^0.2.2
+  url_launcher: ^6.1.4
   
   
 
@@ -83,6 +84,7 @@ flutter:
   assets:
     - assets/theme_light.json
     - assets/theme_dark.json
+    - assets/sloth.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
