@@ -4,6 +4,7 @@ import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:new_keyboard_shortcuts/keyboard_shortcuts.dart';
 import 'package:sloth/page/calendar_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -107,32 +108,36 @@ class _HomePageState extends ConsumerState<HomePage> {
             color: Theme.of(context).colorScheme.background,
             child: Padding(
               padding: const EdgeInsets.all(5),
-              child: Column(
-                children: [
-                  SideBarButton(
-                    iconData: Icons.calendar_month,
-                    isSelected: _pageIndex == 0,
-                    onPressed: () {
-                      setState(() => _pageIndex = 0);
-                    },
-                  ),
-                  SideBarButton(
-                    iconData: Icons.picture_as_pdf,
-                    isSelected: _pageIndex == 1,
-                    onPressed: () {
-                      setState(() => _pageIndex = 1);
-                    },
-                  ),
-                  Expanded(child: Container()),
-                  SideBarButton(
-                    iconData: Icons.settings,
-                    isSelected: _pageIndex == 2,
-                    onPressed: () {
-                      setState(() => _pageIndex = 2);
-                    },
-                  ),
-                  const VersionCard(),
-                ],
+              child: KeyBoardShortcuts(
+                keysToPress: {LogicalKeyboardKey.keyP},
+                onKeysPressed: () => setState(() => _pageIndex = 1),
+                child: Column(
+                  children: [
+                    SideBarButton(
+                      iconData: Icons.calendar_month,
+                      isSelected: _pageIndex == 0,
+                      onPressed: () {
+                        setState(() => _pageIndex = 0);
+                      },
+                    ),
+                    SideBarButton(
+                      iconData: Icons.picture_as_pdf,
+                      isSelected: _pageIndex == 1,
+                      onPressed: () {
+                        setState(() => _pageIndex = 1);
+                      },
+                    ),
+                    Expanded(child: Container()),
+                    SideBarButton(
+                      iconData: Icons.settings,
+                      isSelected: _pageIndex == 2,
+                      onPressed: () {
+                        setState(() => _pageIndex = 2);
+                      },
+                    ),
+                    const VersionCard(),
+                  ],
+                ),
               ),
             ),
           ),
