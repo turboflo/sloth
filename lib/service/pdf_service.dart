@@ -70,26 +70,35 @@ class PdfService {
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
           return pw.Center(
-            child: pw.Table(
-              border: pw.TableBorder.all(),
-              children: List<pw.TableRow>.generate(maxWeekOfMonth + 1, (i) {
-                if (i == 0) {
-                  return headerColumn;
-                } else {
-                  return pw.TableRow(
-                    children: List<pw.Column>.generate(
-                      7,
-                      (weekday) {
-                        try {
-                          return weekdayColumns[weekday][i - 1];
-                        } catch (e) {
-                          return generateColumn('/');
-                        }
-                      },
-                    ),
-                  );
-                }
-              }),
+            child: pw.Column(
+              children: [
+                pw.Text('Arbeitszeiten ($year-$month)'),
+                pw.Container(height: 20),
+                pw.Table(
+                  border: pw.TableBorder.all(),
+                  children: List<pw.TableRow>.generate(
+                    maxWeekOfMonth + 1,
+                    (i) {
+                      if (i == 0) {
+                        return headerColumn;
+                      } else {
+                        return pw.TableRow(
+                          children: List<pw.Column>.generate(
+                            7,
+                            (weekday) {
+                              try {
+                                return weekdayColumns[weekday][i - 1];
+                              } catch (e) {
+                                return generateColumn('/');
+                              }
+                            },
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
           );
         },
