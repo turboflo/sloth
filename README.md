@@ -3,7 +3,7 @@
 
 🦥 An easy tool for creating a timesheet
 
-💙 Built with [Flutter](https://flutter.dev/)
+💙 Built with Flutter
 
 🚧 Work in progress
 
